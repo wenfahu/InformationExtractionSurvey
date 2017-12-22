@@ -21,4 +21,23 @@ Both TransE and TransH embeds the entities and relations to the same vector spac
 
 
 # Neural Relation Extraction with Selective Attention over Instances
-This paper proposes a sentence-level attention-based convolutional neural network for distant supervised relation extraction
+This paper proposes a sentence-level attention-based convolutional neural network for distant supervised relation extraction.
+The overall structure of the sentence-level attentino-based CNN is shown in figure. The CNN is used as a feature extractor to embed the semantics of sentences. Thus, the relations can be represented as the composition of the sentence embeddings. Also, this work tries to solve the problem of wrong labelling in the training process of relation extraction system. Therefore, this paper proposes the sentence level attention over multiple instances to reduce the weights of noise instances. In the end, the obtained relation vector weighted by sentence level attention is much more robust than existing neural relation extraction models. The key parts of this model can be summaried as :
++ Sentence Encoder
++ Selective Attention over Instance
+
+## Sentence Encoder
+The input sentence is encoded into distributed vector representation by a CNN. Each word of the input sentence is transformed into a dense vector using word embeddings and further more each word in the sentence is assigned a position embedding based on the relative distance from current word to head or tail entities. As the word embedding has the semantic information of each single word and the position embedding addresses that the words close to target entities are usually informative to determine the relation between entities, the word embeddings and position embeddings are concatenated as the input of CNN.
+## Selective Attention
+The attention weights defined in the paper is as follows:
+For a sentence embedding x_i
+```
+a_i = exp(e_i) / SUM(e_k)
+```
+where e_i is referred as a query-based function which scores how well the input sentence x_i and the predict relation r matches.
+```
+e_i = x_i A r
+```
+A is a weighted diagonal matrix, and r is the query vector associated with relation r. The attention weights and sentence embedding are multiplied to obtain the weighted sentence vector. And the weighted sentence vector is further fed into a softmax classifier for various relations.
+
+# Adversarial Training for Relation Extraction
